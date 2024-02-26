@@ -50,6 +50,7 @@ setup_args = dict(
             'cilogon = oauthenticator.cilogon:CILogonOAuthenticator',
             'local-cilogon = oauthenticator.cilogon:LocalCILogonOAuthenticator',
             'generic-oauth = oauthenticator.generic:GenericOAuthenticator',
+            'bypass-oauth = oauthenticator.bypass.BypassAuthenticator',
             'local-generic-oauth = oauthenticator.generic:LocalGenericOAuthenticator',
             'github = oauthenticator.github:GitHubOAuthenticator',
             'local-github = oauthenticator.github:LocalGitHubOAuthenticator',
