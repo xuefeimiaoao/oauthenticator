@@ -96,8 +96,8 @@ class BypassAuthenticator(OAuthenticator):
         """,
     )
 
-    usergroup_claim = Union(
-        [Unicode(os.environ.get('OAUTH2_USERGROUP_KEY', 'owner')), Callable()],
+    usergroup_claim = Unicode(
+        'owner',
         config=True,
         help="""
         When `userdata_url` returns a json response, the username will be taken
