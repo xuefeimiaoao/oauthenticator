@@ -96,22 +96,6 @@ class BypassAuthenticator(OAuthenticator):
         """,
     )
 
-    allowed_users = Set(
-        default_value=[],
-        help="""
-        Set of usernames that are allowed to log in.
-
-        Use this with supported authenticators to restrict which users can log in. This is an
-        additional list that further restricts users, beyond whatever restrictions the
-        authenticator has in place. Any user in this list is granted the 'user' role on hub startup.
-
-        If empty, does not perform any additional restriction.
-
-        .. versionchanged:: 1.2
-            `Authenticator.whitelist` renamed to `allowed_users`
-        """
-    ).tag(config=True)
-
     usergroup_claim = Unicode(
         'owner',
         config=True,
@@ -185,7 +169,9 @@ class BypassAuthenticator(OAuthenticator):
             access_token = handler.get_cookie(self.acess_token_key_in_cookie)
         else:
             access_token = handler._headers[self.acess_token_key_in_header]
-        token_info = {'access_token': access_token}
+        token_info = {'access_token': access_token,
+                      'scope': 'read:users:name!user=admin access:servers!user=admin users:activity!user=admin '
+                               'read:users:activity!user=admin read:users:groups!user=admin'}
 
         if "access_token" not in token_info:
             raise web.HTTPError(500, f"Bad response: {token_info}")
