@@ -170,8 +170,8 @@ class BypassAuthenticator(OAuthenticator):
         else:
             access_token = handler._headers[self.acess_token_key_in_header]
         token_info = {'access_token': access_token,
-                      'scope': 'read:users:name!user=admin access:servers!user=admin users:activity!user=admin '
-                               'read:users:activity!user=admin read:users:groups!user=admin'}
+                      'scope': 'read:users:name access:servers users:activity '
+                               'read:users:activity read:users:groups'}
 
         if "access_token" not in token_info:
             raise web.HTTPError(500, f"Bad response: {token_info}")
