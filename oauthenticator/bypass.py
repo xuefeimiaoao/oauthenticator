@@ -158,6 +158,22 @@ class BypassAuthenticator(OAuthenticator):
         """,
     ).tag(config=True)
 
+    def check_allowed(self, username, authentication=None):
+        """Check if a username is allowed to authenticate based on configuration
+
+        Return True if username is allowed, False otherwise.
+        No allowed_users set means any username is allowed.
+
+        Names are normalized *before* being checked against the allowed set.
+
+        .. versionchanged:: 1.0
+            Signature updated to accept authentication data and any future changes
+
+        .. versionchanged:: 1.2
+            Renamed check_whitelist to check_allowed
+        """
+        return True
+
     async def get_token_info(self, handler, params=None):
         """
         Returns:
