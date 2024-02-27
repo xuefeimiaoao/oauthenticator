@@ -4,7 +4,7 @@ import json
 from jupyterhub.handlers import BaseHandler
 from jupyterhub.utils import url_path_join
 from tornado import web
-from traitlets import Unicode, default, Bool
+from traitlets import Unicode, default, Bool, Set
 
 from oauthenticator import OAuthenticator
 
@@ -95,6 +95,22 @@ class BypassAuthenticator(OAuthenticator):
         All group-assignment APIs are disabled if this is True.
         """,
     )
+
+    allowed_users = Set(
+        default_value=[],
+        help="""
+        Set of usernames that are allowed to log in.
+
+        Use this with supported authenticators to restrict which users can log in. This is an
+        additional list that further restricts users, beyond whatever restrictions the
+        authenticator has in place. Any user in this list is granted the 'user' role on hub startup.
+
+        If empty, does not perform any additional restriction.
+
+        .. versionchanged:: 1.2
+            `Authenticator.whitelist` renamed to `allowed_users`
+        """
+    ).tag(config=True)
 
     usergroup_claim = Unicode(
         'owner',
