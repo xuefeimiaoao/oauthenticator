@@ -178,6 +178,7 @@ class BypassAuthenticator(OAuthenticator):
         Called by the :meth:`oauthenticator.OAuthenticator.authenticate`
         """
         if self.acess_token_key_in_header == 'Authorization':
+            self.log.info(f"debug request: {str(handler.request)}")
             self.log.info(f"debug headers: {str(handler.request.headers)}")
 
             authorization = handler.request.headers[self.acess_token_key_in_header]
