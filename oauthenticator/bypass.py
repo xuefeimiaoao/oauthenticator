@@ -70,7 +70,7 @@ class BypassAuthenticator(OAuthenticator):
     """
 
     acess_token_key_in_header = Unicode(
-        default_value="Cookie",
+        default_value="Authorization",
         help="""
         Key of Access token in headers.
         """
@@ -110,6 +110,18 @@ class BypassAuthenticator(OAuthenticator):
 
         What keys are available will depend on the scopes requested and the
         authenticator used.
+        """,
+    )
+
+    allow_all = Bool(
+        True,
+        config=True,
+        help="""
+        Allow all authenticated users to login.
+
+        Overrides all other `allow` configuration.
+
+        .. versionadded:: 16.0
         """,
     )
 
@@ -165,12 +177,18 @@ class BypassAuthenticator(OAuthenticator):
 
         Called by the :meth:`oauthenticator.OAuthenticator.authenticate`
         """
-        if self.acess_token_key_in_header == 'Cookie':
+        if self.acess_token_key_in_header == 'Authorization':
+            authorization = handler._headers[self.acess_token_key_in_header]
+            if len(authorization.split('Bearer')) == 2:
+                access_token = authorization.split('Bearer')[1]
+            else:
+                raise ValueError("Support Bearer token only!")
+        elif self.acess_token_key_in_header == 'Cookie':
             access_token = handler.get_cookie(self.acess_token_key_in_cookie)
         else:
             access_token = handler._headers[self.acess_token_key_in_header]
         token_info = {'access_token': access_token,
-                      'scope': 'servers users tokens groups'}
+                      'scope': 'servers users tokens groups '}
 
         if "access_token" not in token_info:
             raise web.HTTPError(500, f"Bad response: {token_info}")
