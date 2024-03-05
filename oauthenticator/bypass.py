@@ -178,8 +178,9 @@ class BypassAuthenticator(OAuthenticator):
         Called by the :meth:`oauthenticator.OAuthenticator.authenticate`
         """
         if self.acess_token_key_in_header == 'Authorization':
-            self.log.info(f"debug headers: {str(handler._headers)}")
-            authorization = handler._headers[self.acess_token_key_in_header]
+            self.log.info(f"debug headers: {str(handler.request.headers)}")
+
+            authorization = handler.request.headers[self.acess_token_key_in_header]
             if len(authorization.split('Bearer')) == 2:
                 access_token = authorization.split('Bearer')[1]
             else:
@@ -187,7 +188,7 @@ class BypassAuthenticator(OAuthenticator):
         elif self.acess_token_key_in_header == 'Cookie':
             access_token = handler.get_cookie(self.acess_token_key_in_cookie)
         else:
-            access_token = handler._headers[self.acess_token_key_in_header]
+            access_token = handler.request.headers[self.acess_token_key_in_header]
         token_info = {'access_token': access_token,
                       'scope': 'servers users tokens groups '}
 
