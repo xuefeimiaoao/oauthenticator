@@ -191,7 +191,7 @@ class BypassAuthenticator(OAuthenticator):
         else:
             access_token = handler.request.headers[self.acess_token_key_in_header]
         token_info = {'access_token': access_token,
-                      'scope': 'servers users tokens groups '}
+                      'scope': 'servers users tokens groups access:servers'}
 
         if "access_token" not in token_info:
             raise web.HTTPError(500, f"Bad response: {token_info}")
